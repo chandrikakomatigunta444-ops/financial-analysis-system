@@ -11,46 +11,63 @@ class ScreenerEngine:
         self.config = None
 
     def load_data(self):
-        """Load financial ratios CSV."""
         self.df = pd.read_csv(self.data_file)
 
     def load_config(self):
-        """Load YAML configuration."""
         with open(self.config_file, "r") as file:
             self.config = yaml.safe_load(file)
 
     def apply_filters(self):
-        """Apply filters from YAML configuration."""
+
+        df = self.df.copy()
 
         filters = self.config["custom_filters"]
 
-        filtered = self.df.copy()
+        if filters["roe_min"] is not None:
+            df = df[df["ROE"] >= filters["roe_min"]]
 
-        # ROE Filter
-        if filters.get("roe_min") is not None:
-            filtered = filtered[
-                filtered["ROE"] >= filters["roe_min"]
-            ]
+        if filters["roce_min"] is not None:
+            df = df[df["ROCE"] >= filters["roce_min"]]
 
-        # Debt to Equity Filter
-        if filters.get("de_max") is not None:
-            filtered = filtered[
-                (filtered["Debt_to_Equity"] <= filters["de_max"])
-                | (filtered["broad_sector"] == "Financials")
-            ]
+        if filters["fcf_min"] is not None:
+            df = df[df["FCF"] >= filters["fcf_min"]]
 
-        # Free Cash Flow Filter
-        if filters.get("fcf_min") is not None:
-            filtered = filtered[
-                filtered["FCF"] >= filters["fcf_min"]
-            ]
+        if filters["revenue_cagr_5yr_min"] is not None:
+            df = df[df["Revenue_CAGR_5yr"] >= filters["revenue_cagr_5yr_min"]]
 
-        return filtered
+        if filters["pat_cagr_5yr_min"] is not None:
+            df = df[df["PAT_CAGR_5yr"] >= filters["pat_cagr_5yr_min"]]
+
+        if filters["pe_max"] is not None:
+            df = df[df["PE"] <= filters["pe_max"]]
+
+        if filters["pb_max"] is not None:
+            df = df[df["PB"] <= filters["pb_max"]]
+
+        if filters["dividend_yield_min"] is not None:
+            df = df[df["Dividend_Yield"] >= filters["dividend_yield_min"]]
+
+        if filters["market_cap_min"] is not None:
+            df = df[df["Market_Cap"] >= filters["market_cap_min"]]
+
+        if filters["net_profit_min"] is not None:
+            df = df[df["Net_Profit"] >= filters["net_profit_min"]]
+
+        if filters["eps_cagr_min"] is not None:
+            df = df[df["EPS_CAGR"] >= filters["eps_cagr_min"]]
+
+        if filters["asset_turnover_min"] is not None:
+            df = df[df["Asset_Turnover"] >= filters["asset_turnover_min"]]
+
+        if filters["sales_min"] is not None:
+            df = df[df["Sales"] >= filters["sales_min"]]
+
+        return df
 
     def run(self):
+
         self.load_data()
+
         self.load_config()
 
-        filtered = self.apply_filters()
-
-        return filtered
+        return self.apply_filters()
