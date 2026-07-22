@@ -1,4 +1,5 @@
 from src.screener.engine import ScreenerEngine
+from src.analytics.peer import PeerRanking
 
 
 def main():
@@ -11,14 +12,21 @@ def main():
         "config/screener_config.yaml"
     )
 
-    result = engine.run()
+    engine.run()
 
-    print("\nFiltered Companies:\n")
+    engine.save_results("output/screener_output.xlsx")
 
-    if result.empty:
-        print("No companies matched the filters.")
-    else:
-        print(result)
+    print("Screener report generated.")
+
+    peer = PeerRanking(engine.filtered_data)
+
+    peer.calculate_percentiles()
+
+    peer.save_excel("output/peer_comparison.xlsx")
+
+    print("Peer comparison generated.")
+
+    print("Project completed successfully!")
 
 
 if __name__ == "__main__":
