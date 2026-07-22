@@ -1,6 +1,9 @@
 venv/
 __pycache__/
 *.pyc
-output/*.xlsx
-reports/radar_charts/
 *.db
+*.xlsx
+output/
+reports/
+.idea/
+.vscode/
