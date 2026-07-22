@@ -1,49 +1,7 @@
-presets:
+custom_filters:
 
-  Quality Compounder:
-    ROE:
-      min: 15
-    Debt_to_Equity:
-      max: 1.0
-    FCF:
-      min: 0
-    Revenue_CAGR_5yr:
-      min: 10
+  roe_min: 15
 
-  Value Pick:
-    PE:
-      max: 20
-    PB:
-      max: 3
-    Debt_to_Equity:
-      max: 2
-    Dividend_Yield:
-      min: 1
+  de_max: 1
 
-  Growth Accelerator:
-    PAT_CAGR_5yr:
-      min: 20
-    Revenue_CAGR_5yr:
-      min: 15
-    Debt_to_Equity:
-      max: 2
-
-  Dividend Champion:
-    Dividend_Yield:
-      min: 2
-    Dividend_Payout:
-      max: 80
-    FCF:
-      min: 0
-
-  Debt-Free Blue Chip:
-    Debt_to_Equity:
-      max: 0
-    ROE:
-      min: 12
-    Sales:
-      min: 5000
-
-  Turnaround Watch:
-    Revenue_CAGR_3yr:
-      min: 10
+  fcf_min: 0
